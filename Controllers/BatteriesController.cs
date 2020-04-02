@@ -45,7 +45,7 @@ namespace restapi.Controllers
         }
 
         // GET: api/Batteries/{id}/status
-        [HttpGet("{id}/status")]
+        [HttpGet("{id}/Status")]
         public async Task<ActionResult<string>> GetBatteryStatus([FromRoute] long id)
         {
             var myBattery = await this.context.Batteries.FindAsync(id);
@@ -58,22 +58,20 @@ namespace restapi.Controllers
             return myBattery.status;
         }
 
-        [HttpGet("{id}/list")]
+        [HttpGet("{id}/ColumnList")]
         public List<Column> GetBatteryColumnsList(long id)
         {
-            var myBattery = this.context.Batteries.Find(id);
-            return myBattery.Columns.ToList();
+            return this.context.Batteries.Where(b => b.id == id).SelectMany(b => b.Columns).ToList();
         }
-        [HttpGet("{id}/liststatus")]
-        public List<Column> GetBatteryColumnsListStatus(long id)
+
+        [HttpGet("{id}/ColumnStatus")]
+        public List<string> GetBatteryColumnsListStatus(long id)
         {
-            var myColumns = this.context.Batteries.Include(b => b.Columns);
-            var list = myColumns.Where(b => b.id == id).FirstOrDefault<Battery>().Columns.ToList();
-            return list;
+            return this.context.Batteries.FirstOrDefault(b => b.id == id).Columns.Select(c => c.status).ToList();
         }
 
         // POST: api/Batteries/{id}/status
-        [HttpPut("{id}/status")]
+        [HttpPut("{id}/Status")]
         public async Task<ActionResult> UpdateBatteryStatus([FromRoute] long id, [FromBody] UpdateStatusPayload payload)
         {
             var myBattery = await this.context.Batteries.FindAsync(id);

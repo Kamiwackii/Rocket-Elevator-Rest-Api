@@ -3,11 +3,6 @@ using System.Collections.Generic;
 
 public class Battery
 {
-    public Battery()
-    {
-        Columns = new HashSet<Column>();
-    }
-
     public long id { get; set; }
     public string battery_type { get; set; }
     public string status { get; set; }
