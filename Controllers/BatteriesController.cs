@@ -58,18 +58,6 @@ namespace restapi.Controllers
             return myBattery.status;
         }
 
-        [HttpGet("{id}/ColumnList")]
-        public List<Column> GetBatteryColumnsList(long id)
-        {
-            return this.context.Batteries.Where(b => b.id == id).SelectMany(b => b.Columns).ToList();
-        }
-
-        [HttpGet("{id}/ColumnStatus")]
-        public List<string> GetBatteryColumnsListStatus(long id)
-        {
-            return this.context.Batteries.FirstOrDefault(b => b.id == id).Columns.Select(c => c.status).ToList();
-        }
-
         // POST: api/Batteries/{id}/status
         [HttpPut("{id}/Status")]
         public async Task<ActionResult> UpdateBatteryStatus([FromRoute] long id, [FromBody] UpdateStatusPayload payload)

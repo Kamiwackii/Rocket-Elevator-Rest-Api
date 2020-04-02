@@ -56,11 +56,11 @@ namespace restapi.Controllers
 
             return myElevator.status;
         }
-        // GET: api/Elevators/isIntervention
-        [HttpGet("isIntervention")]
-        public List<Elevator> GetElevatorsWithIntervention()
+        // GET: api/Elevators/ListNonOperational
+        [HttpGet("ListNonOperational")]
+        public List<Elevator> GetElevatorsListNonOperational()
         {
-            var elevators = this.context.Elevators.Where(e => e.status == "intervention").ToList();
+            var elevators = this.context.Elevators.Where(e => e.status != "active").ToList();
             return elevators;
         }
 

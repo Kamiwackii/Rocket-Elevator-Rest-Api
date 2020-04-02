@@ -9,18 +9,26 @@ namespace restapi.Contexts
         }
 
         // Tables
+        public DbSet<Building> Buildings { get; set; }
         public DbSet<Battery> Batteries { get; set; }
         public DbSet<Column> Columns { get; set; }
         public DbSet<Elevator> Elevators { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Building>()
+                .ToTable("buildings")
+                .HasKey(c => c.id);
+            modelBuilder.Entity<Building>().HasMany(p => p.Batteries).WithOne(c => c.Building);
+
             modelBuilder.Entity<Battery>()
                 .ToTable("batteries")
                 .HasKey(b => b.id);
             modelBuilder.Entity<Battery>()
                 .Property(x => x.certificate_operations)
                 .HasColumnType("blob");
+            modelBuilder.Entity<Battery>().Property<long?>("building_id");
+            modelBuilder.Entity<Battery>().HasOne(c => c.Building).WithMany(p => p.Batteries).HasForeignKey(d => d.building_id);
             modelBuilder.Entity<Battery>().HasMany(b => b.Columns).WithOne(c => c.Battery);
             
             modelBuilder.Entity<Column>()
@@ -28,6 +36,7 @@ namespace restapi.Contexts
                 .HasKey(c => c.id);
             modelBuilder.Entity<Column>().Property<long?>("battery_id");
             modelBuilder.Entity<Column>().HasOne(c => c.Battery).WithMany(p => p.Columns).HasForeignKey(d => d.battery_id);
+            modelBuilder.Entity<Column>().HasMany(p => p.Elevators).WithOne(c => c.Column);
             
             modelBuilder.Entity<Elevator>()
                 .ToTable("elevators")
