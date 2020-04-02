@@ -1,8 +1,13 @@
+using System;
+using System.Data;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+// using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using restapi.Contexts;
+// using restapi.Models;
 using restapi.Payloads;
 
 namespace restapi.Controllers
@@ -51,6 +56,20 @@ namespace restapi.Controllers
             }
 
             return myBattery.status;
+        }
+
+        [HttpGet("{id}/list")]
+        public List<Column> GetBatteryColumnsList(long id)
+        {
+            var myBattery = this.context.Batteries.Find(id);
+            return myBattery.Columns.ToList();
+        }
+        [HttpGet("{id}/liststatus")]
+        public List<Column> GetBatteryColumnsListStatus(long id)
+        {
+            var myColumns = this.context.Batteries.Include(b => b.Columns);
+            var list = myColumns.Where(b => b.id == id).FirstOrDefault<Battery>().Columns.ToList();
+            return list;
         }
 
         // POST: api/Batteries/{id}/status
