@@ -14,6 +14,7 @@ namespace restapi.Contexts
         public DbSet<Column> Columns { get; set; }
         public DbSet<Elevator> Elevators { get; set; }
         public DbSet<Lead> Leads { get; set; }
+        public DbSet<Intervention> Interventions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +48,10 @@ namespace restapi.Contexts
 
             modelBuilder.Entity<Lead>()
                 .ToTable("leads")
+                .HasKey(l => l.id);
+
+            modelBuilder.Entity<Intervention>()
+                .ToTable("interventions")
                 .HasKey(l => l.id);
         }
     }
