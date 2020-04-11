@@ -11,8 +11,6 @@
 
   - PUT - https://rocketelevsmtl.azurewebsites.net/api/Interventions/{id}/ChangeStatus
   
-example of a JSON request body =>  
-{  
-    "status" : "InProgress" (or "Completed")  
-}  
-  
+  example of a JSON request body:  
+
+{ "status" : "InProgress" (or "Completed") }
